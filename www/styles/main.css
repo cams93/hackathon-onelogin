@@ -1,8 +1,8 @@
 #graphContainer {
-    position:relative;
-    overflow:hidden;
-    width:321px;
-    height:241px;
-    background:url('../img/grid.gif');
-    cursor:default;
+    position: relative;
+    overflow: hidden;
+    width: 80%;
+    height: 80%;
+    background: url('../img/grid.gif');
+    cursor: default;
 }
