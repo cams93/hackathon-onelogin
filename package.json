@@ -9,6 +9,7 @@
         "load-grunt-tasks": "~0.2"
     },
     "dependencies": {
-        "mxgraph": "^3.9.8"
+        "mxgraph": "^3.9.8",
+        "require": "^2.4.20"
     }
 }

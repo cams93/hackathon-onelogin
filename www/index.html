@@ -1,26 +1,21 @@
-<!DOCTYPE html>
 <html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>hack2</title>
+<head>
+    <title>Hachathon OneLogin</title>
 
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="styles/main.css">
+    <!-- Sets the basepath for the library if not in same directory -->
+    <script type="text/javascript">
+        mxBasePath = 'src';
+    </script>
+
+    <!-- Loads and initializes the library -->
+    <script type="text/javascript" src="src/js/mxClient.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
 </head>
-<body>
 
-    <div class="container">
-
-        <div class="row">
-
-            <div class="col-md-12" style="text-align: center;">
-                <h1>hack2</h1>
-                <p>This is my website.</p>
-                <p>There are many like it, but this one is mine.</p>
-            </div>
-
-        </div>
-
-    </div>
-
+<!-- Page passes the container for the graph to the program -->
+<body onload="main(document.getElementById('graphContainer'))">
+    <!-- Creates a container for the graph with a grid wallpaper -->
+    <div id="graphContainer"></div>
 </body>
 </html>
