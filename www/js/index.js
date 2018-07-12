@@ -121,7 +121,7 @@ function main(container)
         document.body.appendChild(mxUtils.button('Payload', function()
         {
             var payload = generatePayload(graph.getModel());
-            mxUtils.popup( payload, true);
+            mxUtils.popup( JSON.stringify(payload), true);
         }));
 
         // Adds cells to the model in a single step
@@ -169,5 +169,35 @@ function main(container)
 };
 
 function generatePayload(model){
-    return "{}";
+    var payload = {"version": "1.0.0",
+                    "entry": "entry",
+                    "name": "reauth",
+                    "complete": "success"};
+    var cells = model.cells;
+    var states = {};
+    for (let key in cells) {
+        var cell = cells[key];
+        if(!(cell instanceof mxCell && cell.value != undefined && cell.vertex==true)){
+            continue;
+        }
+        states[cell.value] = {};
+        states[cell.value].module = cell.value;
+        var map = {};
+        map.found = getEdge(cell, "found");
+        map.not_found = getEdge(cell, "not found");
+        states[cell.value].map = map;
+    }
+    payload.states = states;
+
+    return payload;
+}
+
+function getEdge(cell, name){
+    let edges = cell.edges;
+    for(let i in edges){
+        if(edges[i].value == name && edges[i].source.value == cell.value && edges[i].target!=null){
+            return edges[i].target.value;
+        }
+    }
+    return null;
 }
