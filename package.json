@@ -11,5 +11,9 @@
     "dependencies": {
         "mxgraph": "^3.9.8",
         "require": "^2.4.20"
+    },
+    "scripts": {
+        "postinstall": "grunt uglify",
+        "start": "node server.js"
     }
 }
