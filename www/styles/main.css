@@ -1,6 +1,6 @@
 #graphContainer {
     position: relative;
-    overflow: hidden;
+    overflow: auto;
     width: 80%;
     height: 80%;
     background: url('../img/grid.gif');

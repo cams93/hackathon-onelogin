@@ -117,6 +117,13 @@ function main(container)
             layout.execute(parent);
         }));
 
+        // Adds a button to exporth graph into a payload
+        document.body.appendChild(mxUtils.button('Payload', function()
+        {
+            var payload = generatePayload(graph.getModel());
+            mxUtils.popup( payload, true);
+        }));
+
         // Adds cells to the model in a single step
         graph.getModel().beginUpdate();
 
@@ -160,3 +167,7 @@ function main(container)
         }
     }
 };
+
+function generatePayload(model){
+    return "{}";
+}
