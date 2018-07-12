@@ -1,3 +1,5 @@
+var modules = {};
+
 // Program starts here. Creates a sample graph in the
 // DOM node with the specified ID. This function is invoked
 // from the onLoad event handler of the document (see below).
@@ -77,7 +79,6 @@ function main(container)
         }
     };
 
-
     // Checks if the browser is supported
     if (!mxClient.isBrowserSupported())
     {
@@ -137,6 +138,7 @@ function main(container)
             nodes.push(key);
             const map = states[key].map;
             let edge = {};
+            modules[key] = states[key].module;
             if(map) {
                 edge["name"] = key;
                 edge["found"] = map.found;
@@ -181,7 +183,7 @@ function generatePayload(model){
             continue;
         }
         states[cell.value] = {};
-        states[cell.value].module = cell.value;
+        states[cell.value].module = modules[cell.value];
         var map = {};
         map.found = getEdge(cell, "found");
         map.not_found = getEdge(cell, "not found");
@@ -192,10 +194,10 @@ function generatePayload(model){
     return payload;
 }
 
-function getEdge(cell, name){
+function getEdge(cell, label){
     let edges = cell.edges;
     for(let i in edges){
-        if(edges[i].value == name && edges[i].source.value == cell.value && edges[i].target!=null){
+        if(edges[i].value == label && edges[i].source.value == cell.value && edges[i].target!=null){
             return edges[i].target.value;
         }
     }
