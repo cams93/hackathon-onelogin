@@ -7,77 +7,192 @@ function main(container)
 {
     const payload = {
         "version": "1.0.0",
-        "entry": "entry",
-        "name": "reauth",
-        "complete": "success",
+        "entry": "desktop",
+        "name": "login",
+        "complete": [ "success", "failure" ],
         "states": {
-            "entry": {
-                "module": "Entry",
-                "map": {
-                    "found": "username",
-                    "not_found": "username"
-                }
-            },
-            "username": {
-                "module": "Username",
-                "map": {
-                    "found": "password_or_idp",
-                    "not_found": "password"
-                }
-            },
-            "password_or_idp": {
-                "module": "PasswordOrIdp",
-                "map": {
-                    "found": "password",
-                    "not_found": "user_idp"
-                }
-            },
-            "password": {
-                "module": "Password",
-                "map": {
-                    "found": "requires_mfa",
-                    "not_found": "password"
-                }
-            },
-            "mfa": {
-                "module": "Mfa",
-                "map": {
-                    "found": "mfa_login",
-                    "not_found": "success"
-                }
-            },
-            "mfa_login": {
-                "module": "MfaLogin",
-                "map": {
-                    "found": "success",
-                    "not_found": "username"
-                }
-            },
-            "requires_mfa": {
-                "module": "RequiresMfa",
-                "map": {
-                    "found": "mfa",
-                    "not_found": "success"
-                }
-            },
-            "user_idp": {
-                "module": "UserIdp",
-                "map": {
-                    "found": "access_service",
-                    "not_found": "username"
-                }
-            },
-            "access_service": {
-                "module": "AccessService",
-                "map": {
-                    "found": "success"
-                }
-            },
-            "success": {
-                "module": "ReauthSuccess"
+          "username": {
+            "module": "Username",
+            "map": {
+              "found": "success",
+              "not_found": "password"
             }
+          },
+          "user_idp": {
+            "module": "UserIdp",
+            "map": {
+              "found": "access_service",
+              "not_found": "username"
+            }
+          },
+          "account_idp": {
+            "module": "AccountIdp",
+            "map": {
+              "found": "access_service",
+              "not_found": "username"
+            }
+          },
+          "password_or_idp": {
+            "module": "PasswordOrIdp",
+            "map": {
+              "found": "password",
+              "not_found": "user_idp"
+            }
+          },
+          "password": {
+            "module": "Password",
+            "map": {
+              "found": "user_state",
+              "not_found": "password"
+            }
+          },
+          "user_state": {
+            "module": "UserState",
+            "map": {
+              "found": "requires_euba",
+              "not_found": "failure"
+            }
+          },
+          "requires_euba": {
+            "module": "RequiresEuba",
+            "map": {
+              "found": "euba_risk",
+              "not_found": "requires_mfa"
+            }
+          },
+          "euba_risk": {
+            "module": "EubaRisk",
+            "map": {
+              "found": "requires_mfa",
+              "not_found": "pki"
+            }
+          },
+          "prepare_set_password": {
+            "module": "PrepareResetPassword",
+            "map": {
+              "found": "set_password",
+              "not_found": "username"
+            }
+          },
+          "set_password": {
+            "module": "ResetPassword",
+            "map": {
+              "found": "success",
+              "not_found": "prepare_set_password"
+            }
+          },
+          "has_password_expired": {
+            "module": "HasPasswordExpired",
+            "map": {
+              "found": "prepare_set_password",
+              "not_found": "success"
+            }
+          },
+          "failure": {
+            "module": "Failure"
+          },
+          "success": {
+            "module": "Success"
+          },
+          "mfa": {
+            "module": "Mfa",
+            "map": {
+              "found": "mfa_login",
+              "not_found": "mfa_register"
+            }
+          },
+          "mfa_register": {
+            "module": "MfaRegister",
+            "map": {
+              "found": "requires_terms",
+              "not_found": "username"
+            }
+          },
+          "mfa_login": {
+            "module": "MfaLogin",
+            "map": {
+              "found": "requires_terms",
+              "not_found": "username"
+            }
+          },
+          "requires_terms": {
+            "module": "RequiresTermsAndConditions",
+            "map": {
+              "found": "terms",
+              "not_found": "has_password_expired"
+            }
+          },
+          "terms": {
+            "module": "TermsAndConditions",
+            "map": {
+              "found": "has_password_expired",
+              "not_found": "failure"
+            }
+          },
+          "requires_mfa": {
+            "module": "RequiresMfa",
+            "map": {
+              "found": "mfa",
+              "not_found": "pki"
+            }
+          },
+          "desktop": {
+            "module": "Desktop",
+            "map": {
+              "found": "desktop_login",
+              "not_found": "username_or_idp"
+            }
+          },
+          "username_or_idp": {
+            "module": "UsernameOrIdp",
+            "map": {
+              "found": "username",
+              "not_found": "account_idp"
+            }
+          },
+          "desktop_login": {
+            "module": "DesktopLogin",
+            "map": {
+              "found": "user_state_certificate",
+              "not_found": "username_or_idp"
+            }
+          },
+          "user_state_certificate": {
+            "module": "UserState",
+            "map": {
+              "found": "access_service",
+              "not_found": "failure"
+            }
+          },
+          "pki": {
+            "module": "Pki",
+            "map": {
+              "found": "pki_login",
+              "not_found": "requires_terms"
+            }
+          },
+          "access_service": {
+            "module": "AccessService",
+            "map": {
+              "found": "requires_terms"
+            }
+          },
+          "pki_login": {
+            "module": "PkiLogin",
+            "map": {
+              "found": "access_service",
+              "not_found": "username"
+            }
+          },
+          "pki_install": {
+            "module": "PkiInstall",
+            "map": {
+              "found": "requires_terms",
+              "not_found": "pki_install"
+            }
+          }
         }
-    };
+      };
 
     // Checks if the browser is supported
     if (!mxClient.isBrowserSupported())
@@ -121,8 +236,8 @@ function main(container)
         // Adds a button to exporth graph into a payload
         document.body.appendChild(mxUtils.button('Payload', function()
         {
-            var payload = generatePayload(graph.getModel());
-            mxUtils.popup( JSON.stringify(payload), true);
+            var payload_result = generatePayload(graph.getModel(), payload);
+            mxUtils.popup( JSON.stringify(payload_result), true);
         }));
 
         // Adds cells to the model in a single step
@@ -170,11 +285,9 @@ function main(container)
     }
 };
 
-function generatePayload(model){
-    var payload = {"version": "1.0.0",
-                    "entry": "entry",
-                    "name": "reauth",
-                    "complete": "success"};
+function generatePayload(model, payload){
+    delete payload["states"];
+    
     var cells = model.cells;
     var states = {};
     for (let key in cells) {
@@ -200,7 +313,7 @@ function generatePayload(model){
         }
     }
     payload.states = states;
-console.log(payload);
+
     return payload;
 }
 
