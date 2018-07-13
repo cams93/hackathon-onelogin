@@ -185,12 +185,22 @@ function generatePayload(model){
         states[cell.value] = {};
         states[cell.value].module = modules[cell.value];
         var map = {};
-        map.found = getEdge(cell, "found");
-        map.not_found = getEdge(cell, "not found");
-        states[cell.value].map = map;
+        var found = getEdge(cell, "found");
+        if(found != null && found != undefined){
+            map.found = found;
+        }
+
+        not_found = getEdge(cell, "not found");
+        if(not_found != null && not_found != undefined){
+            map.not_found = not_found;
+        }
+
+        if (Object.keys(map).length > 0){
+            states[cell.value].map = map;
+        }
     }
     payload.states = states;
-
+console.log(payload);
     return payload;
 }
 
